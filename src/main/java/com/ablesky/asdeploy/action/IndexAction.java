@@ -1,15 +1,12 @@
 package com.ablesky.asdeploy.action;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
-import org.apache.struts2.interceptor.ServletRequestAware;
-import org.apache.struts2.interceptor.ServletResponseAware;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ablesky.asdeploy.security.jcaptcha.JCaptcha;
@@ -19,21 +16,10 @@ import com.ablesky.asdeploy.util.AuthUtil;
 
 @ParentPackage("base")
 @SuppressWarnings("serial")
-public class IndexAction extends ModelMapActionSupport implements ServletRequestAware, ServletResponseAware {
+public class IndexAction extends ModelMapActionSupport {
 	
 	public static final String DEFAULT_SUCCESS_URL = "/main";
 	
-	private HttpServletRequest request;
-	private HttpServletResponse response;
-	@Override
-	public void setServletRequest(HttpServletRequest request) {
-		this.request = request;
-	}
-	@Override
-	public void setServletResponse(HttpServletResponse response) {
-		this.response = response;
-	}
-
 	@Autowired
 	private IUserService userService;
 	
@@ -58,7 +44,7 @@ public class IndexAction extends ModelMapActionSupport implements ServletRequest
 	
 	@Action(value="login", results={
 		@Result(name="login", location="login.jsp"),
-		@Result(name="json", type="json", params={"root", "modelMap"})
+		@Result(name="json", type="json", params={"root", "model"})
 	})
 	public String login() throws Exception {
 		String method = request.getMethod();
@@ -149,7 +135,7 @@ public class IndexAction extends ModelMapActionSupport implements ServletRequest
 	
 	@Action(value="unauthorized", results={
 		@Result(name="unauthorized", location="unauthorized.jsp"),
-		@Result(name="json", type="json", params={"root", "modelMap"})
+		@Result(name="json", type="json", params={"root", "model"})
 	})
 	public String unauthorized() {
 		if(isAjax(request)) {

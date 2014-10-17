@@ -97,7 +97,7 @@ function initEditUserBtn() {
 	$('.edit-btn').on('click', function(){
 		var $this = $(this);
 		openEditUserWin({
-			url: CTX_PATH + '/admin/user/changePassword/' + $this.attr('data-id'),
+			url: CTX_PATH + '/admin/user/changePassword?userId=' + $this.attr('data-id'),
 			height: 260
 		});
 	});

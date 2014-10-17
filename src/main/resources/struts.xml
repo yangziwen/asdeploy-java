@@ -9,8 +9,8 @@
 	<constant name="struts.objectFactory" value="spring"/>
 	<constant name="struts.convention.package.locators.basePackage" value="com.ablesky.asdeploy.action"/>
 	<constant name="struts.convention.result.path" value="/WEB-INF/views"/>
-	<!-- <constant name="struts.action.excludePattern" value="/js/.*,/css/.*,/img/.*"></constant>
-	 -->
+	<constant name="struts.action.excludePattern" value="/js/.*,/css/.*,/img/.*"></constant>
+	
 	<package name="base" namespace="/" extends="json-default, struts-default"/>
 	
 </struts>
