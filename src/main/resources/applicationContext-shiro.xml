@@ -72,7 +72,9 @@
 				/login = authc
 				/login/** = anon
 				/logout = logout
-				/static/** = anon
+				/js/** = anon
+				/css/** = anon
+				/img/** = anon
 				/admin/** = authc, roles[super_admin]
 				/** = user
 			</value>

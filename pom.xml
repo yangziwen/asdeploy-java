@@ -16,6 +16,7 @@
 		<jcaptcha.version>2.0-alpha-1</jcaptcha.version>
 		<mockito.version>1.9.5</mockito.version>
 		<powermock.version>1.5.6</powermock.version>
+		<struts2.version>2.3.16.3</struts2.version>
 		<spring.profiles.active>development</spring.profiles.active>
 		<antbuild.target>nothing</antbuild.target>
 	</properties>
@@ -40,6 +41,28 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
+		</dependency>
+		
+		<!-- struts2 -->
+		<dependency>
+			<groupId>org.apache.struts</groupId>
+			<artifactId>struts2-core</artifactId>
+			<version>${struts2.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.struts</groupId>
+			<artifactId>struts2-spring-plugin</artifactId>
+			<version>${struts2.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.struts</groupId>
+			<artifactId>struts2-convention-plugin</artifactId>
+			<version>${struts2.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.struts</groupId>
+			<artifactId>struts2-json-plugin</artifactId>
+			<version>${struts2.version}</version>
 		</dependency>
 
 		<!-- spring相关依赖 -->
@@ -66,6 +89,11 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
 			<version>${springframework.version}</version>
 		</dependency>
 		<dependency>
