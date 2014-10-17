@@ -103,10 +103,10 @@ public class IndexAction extends ModelMapActionSupport {
 	
 	private String doRegister() {
 		
-		String username = getFromModel("username");
-		String password = getFromModel("password");
-		String confirmedPassword = getFromModel("confirmedPassword");
-		String verifyCode = getFromModel("verifyCode");
+		String username = getStringParam("username");
+		String password = getStringParam("password");
+		String confirmedPassword = getStringParam("confirmedPassword");
+		String verifyCode = getStringParam("verifyCode");
 
 		clearModel();
 		

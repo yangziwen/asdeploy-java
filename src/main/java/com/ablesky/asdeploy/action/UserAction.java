@@ -41,8 +41,8 @@ public class UserAction extends ModelMapActionSupport {
 	}
 	
 	private String doChangePassword() {
-		String oldPassword = getFromModel("oldPassword");
-		String newPassword = getFromModel("newPassword");
+		String oldPassword = getStringParam("oldPassword");
+		String newPassword = getStringParam("newPassword");
 		if(StringUtils.isBlank(oldPassword) || StringUtils.isBlank(newPassword)) {
 			modelMap.put("success", false);
 			modelMap.put("message", "原密码和新密码不能为空!");

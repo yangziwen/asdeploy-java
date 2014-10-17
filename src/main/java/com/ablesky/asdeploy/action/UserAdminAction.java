@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
@@ -50,8 +49,8 @@ public class UserAdminAction extends ModelMapActionSupport {
 		@Result(name="json", type="json", params={"root", "model"})
 	})
 	public String switchSuperAdmin() {
-		Long userId = getFromModel("userId");
-		Boolean isSuperAdmin = getFromModel("isSuperAdmin");
+		Long userId = getLongParam("userId");
+		Boolean isSuperAdmin = getBooleanParam("isSuperAdmin");
 		if(userId == null || isSuperAdmin == null) {
 			modelMap.put("success", false);
 			modelMap.put("message", "参数有误!");
@@ -89,10 +88,10 @@ public class UserAdminAction extends ModelMapActionSupport {
 		@Result(name="json", type="json", params={"root", "model"})
 	})
 	public String changePassword() {
-		Long userId = NumberUtils.toLong(this.<String>getFromModel("userId"));
+		Long userId = getLongParam("userId");
 		String method = request.getMethod();
 		if(HttpMethod.POST.equals(method)) {
-			doChangePassword(userId, this.<String>getFromModel("newPassword"));
+			doChangePassword(userId, getStringParam("newPassword"));
 			return "json";
 		} else {
 			modelMap.put("user", userService.getUserById(userId));
