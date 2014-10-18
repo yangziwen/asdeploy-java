@@ -125,7 +125,7 @@ input[type="text"], input[type="password"] {
 						<td colspan="2" class="btn-wrapper">
 							<button class="btn" type="submit">注&nbsp;&nbsp;册</button>
 							<div style="width: 10px; display: inline-block;">&nbsp;</div>
-							<button class="btn" type="button" onclick="window.location.href='${ctx_path}/login/'">返&nbsp;&nbsp;回</button>
+							<button class="btn" type="button" onclick="window.location.href='${ctx_path}/login'">返&nbsp;&nbsp;回</button>
 						</td>
 					</tr>
 				</tbody>

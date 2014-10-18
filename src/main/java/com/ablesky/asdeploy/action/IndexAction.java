@@ -26,10 +26,14 @@ public class IndexAction extends ModelMapActionSupport {
 	@Autowired
 	private IDeployService deployService;
 	
-	@Action(results={@Result(location="main.jsp")})
+	@Action(results={
+		@Result(name="mainRedirect", type="redirectAction", location="main"),
+		@Result(name="loginRedirect", type="redirectAction", location="login")
+	})
 	public String execute() {
-		main();
-		return SUCCESS;
+		return AuthUtil.isUser()
+			? "mainRedirect"
+			: "loginRedirect";
 	}
 	
 	@Action(value="main", results={
