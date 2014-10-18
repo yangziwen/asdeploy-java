@@ -35,7 +35,7 @@ public class UserAction extends ModelMapActionSupport {
 		if(HttpMethod.POST.equals(method)) {
 			return doChangePassword();
 		} else {
-			modelMap.put("user", AuthUtil.getCurrentUser());
+			model.put("user", AuthUtil.getCurrentUser());
 			return "changePassword";
 		}
 	}
@@ -44,19 +44,19 @@ public class UserAction extends ModelMapActionSupport {
 		String oldPassword = getStringParam("oldPassword");
 		String newPassword = getStringParam("newPassword");
 		if(StringUtils.isBlank(oldPassword) || StringUtils.isBlank(newPassword)) {
-			modelMap.put("success", false);
-			modelMap.put("message", "原密码和新密码不能为空!");
+			model.put("success", false);
+			model.put("message", "原密码和新密码不能为空!");
 			return "json";
 		}
 		User user = userService.getUserById(AuthUtil.getCurrentUser().getId());
 		if(!user.getPassword().equals(AuthUtil.hashPassword(user.getUsername(), oldPassword))) {
-			modelMap.put("success", false);
-			modelMap.put("message", "原密码不正确!");
+			model.put("success", false);
+			model.put("message", "原密码不正确!");
 			return "json";
 		}
 		user.setPassword(AuthUtil.hashPassword(user.getUsername(), newPassword));
 		userService.saveOrUpdateUser(user);
-		modelMap.put("success", true);
+		model.put("success", true);
 		return "json";
 	}
 	

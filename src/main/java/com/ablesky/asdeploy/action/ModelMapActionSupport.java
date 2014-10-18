@@ -19,27 +19,27 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 
 @SuppressWarnings("serial")
-public class ModelMapActionSupport extends ActionSupport 
+public abstract class ModelMapActionSupport extends ActionSupport 
 		implements ModelDriven<Map<String, Object>>, ServletRequestAware, ServletResponseAware {
 	
 	protected HttpServletRequest request;
 	protected HttpServletResponse response;
 	
 	@Override
-	public void setServletResponse(HttpServletResponse response) {
-		this.response = response;
-	}
-
-	@Override
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
 	
-	protected Map<String, Object> modelMap = new HashMap<String, Object>();
+	@Override
+	public void setServletResponse(HttpServletResponse response) {
+		this.response = response;
+	}
+	
+	protected final Map<String, Object> model = new HashMap<String, Object>();
 
 	@Override
-	public Map<String, Object> getModel() {
-		return modelMap;
+	public final Map<String, Object> getModel() {
+		return model;
 	}
 	
 	protected String getStringParam(String key) {
@@ -89,7 +89,7 @@ public class ModelMapActionSupport extends ActionSupport
 	}
 	
 	protected List<String> getStringParamList(String key) {
-		Object obj = modelMap.get(key);
+		Object obj = model.get(key);
 		if(obj == null) {
 			return Collections.emptyList();
 		}
@@ -162,7 +162,7 @@ public class ModelMapActionSupport extends ActionSupport
 	}
 	
 	protected void clearModel() {
-		modelMap.clear();
+		model.clear();
 	}
 
 }

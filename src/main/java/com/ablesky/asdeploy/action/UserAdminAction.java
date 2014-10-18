@@ -40,8 +40,8 @@ public class UserAdminAction extends ModelMapActionSupport {
 			User user = rel.getUser();
 			superAdminMap.put(user.getUsername(), user);
 		}
-		modelMap.put("list", userService.getUserListResult(0, 0, Collections.<String, Object>emptyMap()));
-		modelMap.put("superAdminMap", superAdminMap);
+		model.put("list", userService.getUserListResult(0, 0, Collections.<String, Object>emptyMap()));
+		model.put("superAdminMap", superAdminMap);
 		return "list";
 	}
 	
@@ -52,34 +52,34 @@ public class UserAdminAction extends ModelMapActionSupport {
 		Long userId = getLongParam("userId");
 		Boolean isSuperAdmin = getBooleanParam("isSuperAdmin");
 		if(userId == null || isSuperAdmin == null) {
-			modelMap.put("success", false);
-			modelMap.put("message", "参数有误!");
+			model.put("success", false);
+			model.put("message", "参数有误!");
 			return "json";
 		}
 		if(!AuthUtil.isSuperAdmin()) {
-			modelMap.put("success", false);
-			modelMap.put("message", "没有权限!");
+			model.put("success", false);
+			model.put("message", "没有权限!");
 			return "json";
 		}
 		if(userId.equals(AuthUtil.getCurrentUser().getId())) {
-			modelMap.put("success", false);
-			modelMap.put("message", "不允许超级管理员将自身将为普通用户!");
+			model.put("success", false);
+			model.put("message", "不允许超级管理员将自身将为普通用户!");
 			return "json";
 		}
 		if(!isSuperAdmin) {
 			authorityService.deleteUserRelRoleByUserIdAndRoleName(userId, Role.NAME_SUPER_ADMIN);
-			modelMap.put("success", true);
+			model.put("success", true);
 			return "json";
 		}
 		User user = userService.getUserById(userId);
 		Role role = authorityService.getRoleByName(Role.NAME_SUPER_ADMIN);
 		UserRelRole superAdminRel = authorityService.addUserRelRoleByUserAndRole(user, role);
 		if(superAdminRel == null){
-			modelMap.put("success", false);
-			modelMap.put("message", "用户或角色不存在!");
+			model.put("success", false);
+			model.put("message", "用户或角色不存在!");
 			return "json";
 		}
-		modelMap.put("success", true);
+		model.put("success", true);
 		return "json";
 	}
 	
@@ -94,32 +94,32 @@ public class UserAdminAction extends ModelMapActionSupport {
 			doChangePassword(userId, getStringParam("newPassword"));
 			return "json";
 		} else {
-			modelMap.put("user", userService.getUserById(userId));
+			model.put("user", userService.getUserById(userId));
 			return "changePassword";
 		}
 	}
 	
 	private void doChangePassword(Long userId, String newPassword) {
 		if(!AuthUtil.isSuperAdmin()) {
-			modelMap.put("success", false);
-			modelMap.put("message", "没有权限!");
+			model.put("success", false);
+			model.put("message", "没有权限!");
 			return;
 		}
 		if(userId == null || userId <= 0 || StringUtils.isBlank(newPassword)) {
-			modelMap.put("success", false);
-			modelMap.put("message", "参数有误!");
+			model.put("success", false);
+			model.put("message", "参数有误!");
 			return;
 		}
 		User user = userService.getUserById(userId);
 		if(user == null) {
-			modelMap.put("success", false);
-			modelMap.put("message", "用户不存在!");
+			model.put("success", false);
+			model.put("message", "用户不存在!");
 			return;
 		}
 		user.setPassword(AuthUtil.hashPassword(user.getUsername(), newPassword));
 		userService.saveOrUpdateUser(user);
-		modelMap.put("success", true);
-		modelMap.put("message", "修改成功!"); 
+		model.put("success", true);
+		model.put("message", "修改成功!"); 
 		return;
 	}
 }

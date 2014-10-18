@@ -36,9 +36,9 @@ public class IndexAction extends ModelMapActionSupport {
 		@Result(name="main", location="main.jsp")
 	})
 	public String main() {
-		modelMap.put("deployLock", deployService.checkCurrentLock());
-		modelMap.put("currentUser", AuthUtil.getCurrentUser());
-		modelMap.put("isSuperAdmin", AuthUtil.isSuperAdmin());
+		model.put("deployLock", deployService.checkCurrentLock());
+		model.put("currentUser", AuthUtil.getCurrentUser());
+		model.put("isSuperAdmin", AuthUtil.isSuperAdmin());
 		return "main";
 	}
 	
@@ -70,9 +70,9 @@ public class IndexAction extends ModelMapActionSupport {
 	}
 	
 	private String toLoginByAjax() {
-		modelMap.put("success", false);
-		modelMap.put("needLogin", true);
-		modelMap.put("message", "需要登录或重新确认身份!");
+		model.put("success", false);
+		model.put("needLogin", true);
+		model.put("message", "需要登录或重新确认身份!");
 		return "json";
 	}
 	
@@ -82,9 +82,9 @@ public class IndexAction extends ModelMapActionSupport {
 			return NONE;
 		} 
 		if(AuthUtil.isRemembered()) {
-			modelMap.put("errorMessage", "密码错误，请重试!");
+			model.put("errorMessage", "密码错误，请重试!");
 		} else {
-			modelMap.put("errorMessage", "用户名或密码错误，请重试!");
+			model.put("errorMessage", "用户名或密码错误，请重试!");
 		}
 		return "login";
 	}
@@ -111,21 +111,21 @@ public class IndexAction extends ModelMapActionSupport {
 		clearModel();
 		
 		if(StringUtils.isBlank(username)) {
-			modelMap.put("usernameError", "用户名不能为空!");
+			model.put("usernameError", "用户名不能为空!");
 		} else if(userService.getUserByUsername(username) != null) {
-			modelMap.put("usernameError", "用户名已被占用!");
+			model.put("usernameError", "用户名已被占用!");
 		}
 		if(StringUtils.isBlank(password)) {
-			modelMap.put("passwordError", "密码不能为空!");
+			model.put("passwordError", "密码不能为空!");
 		} else if (!password.equals(confirmedPassword)) {
-			modelMap.put("confirmedPasswordError", "两次输入的密码不一致!");
+			model.put("confirmedPasswordError", "两次输入的密码不一致!");
 		}
 		if(StringUtils.isBlank(verifyCode)) {
-			modelMap.put("verifyCodeError", "验证码不能为空!");
+			model.put("verifyCodeError", "验证码不能为空!");
 		} else if(!JCaptcha.validateResponse(request.getSession(), verifyCode)) {
-			modelMap.put("verifyCodeError", "验证码输入错误!");
+			model.put("verifyCodeError", "验证码输入错误!");
 		}
-		if(modelMap.size() > 0) {
+		if(model.size() > 0) {
 			return "register";
 		}
 		userService.createNewUser(username, password);
@@ -139,8 +139,8 @@ public class IndexAction extends ModelMapActionSupport {
 	})
 	public String unauthorized() {
 		if(isAjax(request)) {
-			modelMap.put("success", "false");
-			modelMap.put("message", "没有权限!");
+			model.put("success", "false");
+			model.put("message", "没有权限!");
 			return "json";
 		} else {
 			return "unauthorized";
