@@ -28,7 +28,10 @@ import com.opensymphony.xwork2.ModelDriven;
 public abstract class ModelMapActionSupport extends ActionSupport 
 		implements ModelDriven<Map<String, Object>>, ServletRequestAware, ServletResponseAware {
 	
-	private final static ConcurrentHashMap<String, String[]> actionPathMap = new ConcurrentHashMap<String, String[]>();
+	public static final int DEFAULT_START = 0;
+	public static final int DEFAULT_LIMIT = 30;
+	
+	private static final ConcurrentHashMap<String, String[]> actionPathMap = new ConcurrentHashMap<String, String[]>();
 	
 	private static final String REQUEST_PATH_SEPARATOR = "/";
 	/* pathVariableList用于保存路径中的变量 */

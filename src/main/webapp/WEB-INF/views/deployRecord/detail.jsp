@@ -112,7 +112,7 @@ h3.title {
 				<tr>
 					<td>${conflictInfo.patchFile.filePath}</td>
 					<td>
-						<a href="${ctx_path}/patchGroup/detail/${conflictInfo.relatedPatchGroup.id}/" target="_blank">
+						<a href="${ctx_path}/patchGroup/detail/${conflictInfo.relatedPatchGroup.id}" target="_blank">
 						${conflictInfo.relatedPatchGroup.name}
 						</a>
 					</td>

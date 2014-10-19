@@ -142,7 +142,7 @@ function initStatusSel() {
 function initSaveBtn() {
 	$('#J_saveBtn').on('click', function(){
 		var params = collectParams('#J_tbody input[type=text],#J_tbody input[type=hidden], #J_tbody select'),
-			url = CTX_PATH + '/patchGroup/edit';
+			url = CTX_PATH + '/patchGroup/edit/' + params['id'];
 		$.post(url, params, function(data){
 			if(data.success === true) {
 				alertMsg({message: '操作成功!', width: 250}).done(function(){
