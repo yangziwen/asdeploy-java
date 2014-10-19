@@ -20,6 +20,8 @@ import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 
+import com.ablesky.asdeploy.action.support.HttpMethod;
+import com.ablesky.asdeploy.action.support.ModelMapActionSupport;
 import com.ablesky.asdeploy.pojo.ConflictInfo;
 import com.ablesky.asdeploy.pojo.PatchFile;
 import com.ablesky.asdeploy.pojo.PatchFileRelGroup;

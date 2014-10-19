@@ -1,4 +1,4 @@
-package com.ablesky.asdeploy.action;
+package com.ablesky.asdeploy.action.support;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

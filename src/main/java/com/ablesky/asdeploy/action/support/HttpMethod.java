@@ -1,4 +1,4 @@
-package com.ablesky.asdeploy.action;
+package com.ablesky.asdeploy.action.support;
 
 public class HttpMethod {
 
