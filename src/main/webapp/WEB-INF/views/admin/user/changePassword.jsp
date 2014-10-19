@@ -96,7 +96,7 @@ function initSaveBtn() {
 				userId: $('#J_userId').val(),
 				newPassword: $('#J_newPassword').val()
 			},
-			url = CTX_PATH + '/admin/user/changePassword';
+			url = CTX_PATH + '/admin/user/changePassword/' + params['userId'];
 		$.post(url, params, function(data){
 			if(data.success === true) {
 				alertMsg('操作成功!').done(function(){

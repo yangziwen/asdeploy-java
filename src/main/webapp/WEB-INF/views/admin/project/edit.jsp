@@ -100,7 +100,7 @@ $(function(){
 function initSaveBtn() {
 	$('#J_saveBtn').on('click', function(){
 		var params = collectParams('#J_tbody input[type=text]'),
-			url = CTX_PATH + '/admin/project/edit';
+			url = CTX_PATH + '/admin/project/edit/' + params['id'];
 		$.post(url, params, function(data){
 			if(data.success === true) {
 				alertMsg('操作成功!').done(function(){

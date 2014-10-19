@@ -111,5 +111,13 @@ input[type="text"], input[type="password"] {
 </body>
 <%@ include file="./include/includeJs.jsp" %>
 <script type="text/javascript">
+$(function(){
+	var isUser = !!'<shiro:user>true</shiro:user>';
+	if(isUser) {
+		$('#J_password').focus();
+	} else {
+		$('#J_username').focus();
+	}
+})
 </script>
 </html>

@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
@@ -83,12 +84,12 @@ public class UserAdminAction extends ModelMapActionSupport {
 		return "json";
 	}
 	
-	@Action(value="changePassword", results = {
-		@Result(name="changePassword", location="changePassword.jsp"),
+	@Action(value="/admin/user/changePassword/*", results = {
+		@Result(name="changePassword", location="/WEB-INF/views/admin/user/changePassword.jsp"),
 		@Result(name="json", type="json", params={"root", "model"})
 	})
 	public String changePassword() {
-		Long userId = getLongParam("userId");
+		Long userId = NumberUtils.toLong(getPathVariable(1));
 		String method = request.getMethod();
 		if(HttpMethod.POST.equals(method)) {
 			doChangePassword(userId, getStringParam("newPassword"));
