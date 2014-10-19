@@ -9,6 +9,7 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
+import org.apache.struts2.convention.annotation.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 
@@ -23,6 +24,10 @@ import com.ablesky.asdeploy.util.AuthUtil;
 
 @ParentPackage("base")
 @Namespace("/admin/user")
+@Results({
+	@Result(name="json", type="json", params={"root", "model"}),
+	@Result(name="redirect", type="redirect", location="${redirectLocation}")
+})
 @SuppressWarnings("serial")
 public class UserAdminAction extends ModelMapActionSupport {
 	
@@ -48,9 +53,7 @@ public class UserAdminAction extends ModelMapActionSupport {
 		return "list";
 	}
 	
-	@Action(value="switchSuperAdmin", results = {
-		@Result(name="json", type="json", params={"root", "model"})
-	})
+	@Action("switchSuperAdmin")
 	public String switchSuperAdmin() {
 		Long userId = getLongParam("userId");
 		Boolean isSuperAdmin = getBooleanParam("isSuperAdmin");
@@ -87,8 +90,7 @@ public class UserAdminAction extends ModelMapActionSupport {
 	}
 	
 	@Action(value="/admin/user/changePassword/*", results = {
-		@Result(name="changePassword", location="/WEB-INF/views/admin/user/changePassword.jsp"),
-		@Result(name="json", type="json", params={"root", "model"})
+		@Result(name="changePassword", location="/WEB-INF/views/admin/user/changePassword.jsp")
 	})
 	public String changePassword() {
 		Long userId = NumberUtils.toLong(getPathVariable(1));

@@ -37,11 +37,11 @@ import com.ablesky.asdeploy.util.Deployer;
 
 @ParentPackage("base")
 @Namespace("/deploy")
-@SuppressWarnings("serial")
 @Results({
 	@Result(name="json", type="json", params={"root", "model"}),
 	@Result(name="redirect", type="redirect", location="${redirectLocation}")
 })
+@SuppressWarnings("serial")
 public class DeployAction extends ModelMapActionSupport {
 	
 	@Autowired

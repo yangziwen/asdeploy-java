@@ -9,6 +9,7 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
+import org.apache.struts2.convention.annotation.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ablesky.asdeploy.action.support.HttpMethod;
@@ -18,6 +19,10 @@ import com.ablesky.asdeploy.service.IProjectService;
 
 @ParentPackage("base")
 @Namespace("/admin/project")
+@Results({
+	@Result(name="json", type="json", params={"root", "model"}),
+	@Result(name="redirect", type="redirect", location="${redirectLocation}")
+})
 @SuppressWarnings("serial")
 public class ProjectAdminAction extends ModelMapActionSupport {
 	
@@ -34,8 +39,7 @@ public class ProjectAdminAction extends ModelMapActionSupport {
 	
 	@Action(value="/admin/project/edit/*", results = {
 		// 非常令人费解，struts有bug么？
-		@Result(name="edit", location="/WEB-INF/views/admin/project/edit.jsp"),
-		@Result(name="json", type="json", params={"root", "model"})
+		@Result(name="edit", location="/WEB-INF/views/admin/project/edit.jsp")
 	})
 	public String toEdit() {
 		if(HttpMethod.POST.equals(request.getMethod())) {
@@ -88,9 +92,7 @@ public class ProjectAdminAction extends ModelMapActionSupport {
 		model.put("success", true);
 	}
 	
-	@Action(value="/admin/project/delete/*", results = {
-		@Result(name="json", type="json", params={"root", "model"})
-	})
+	@Action("/admin/project/delete/*")
 	public String delete() {
 		Long id = NumberUtils.toLong(getPathVariable(1));
 		projectService.deleteProjectById(id);
@@ -99,9 +101,7 @@ public class ProjectAdminAction extends ModelMapActionSupport {
 		return "json";
 	}
 	
-	@Action(value="/admin/project/switch/*", results = {
-		@Result(name="json", type="json", params={"root", "model"})
-	})
+	@Action("/admin/project/switch/*")
 	public String switchDeployScriptType() {
 		Long id = NumberUtils.toLong(getPathVariable(1));
 		Integer deployScriptType = getIntParam("deployScriptType");

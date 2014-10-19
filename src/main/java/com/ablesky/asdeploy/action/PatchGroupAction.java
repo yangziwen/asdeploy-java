@@ -17,6 +17,7 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
+import org.apache.struts2.convention.annotation.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 
@@ -36,6 +37,10 @@ import com.ablesky.asdeploy.util.CommonConstant;
 
 @ParentPackage("base")
 @Namespace("/patchGroup")
+@Results({
+	@Result(name="json", type="json", params={"root", "model"}),
+	@Result(name="redirect", type="redirect", location="${redirectLocation}")
+})
 @SuppressWarnings("serial")
 public class PatchGroupAction extends ModelMapActionSupport {
 	
@@ -120,8 +125,7 @@ public class PatchGroupAction extends ModelMapActionSupport {
 	}
 	
 	@Action(value="/patchGroup/edit/*", results = {
-		@Result(name="edit", location="/WEB-INF/views/patchGroup/edit.jsp"),
-		@Result(name="json", type="json", params={"root", "model"})
+		@Result(name="edit", location="/WEB-INF/views/patchGroup/edit.jsp")
 	})
 	public String edit() {
 		if(HttpMethod.POST.equals(request.getMethod())) {
@@ -197,9 +201,7 @@ public class PatchGroupAction extends ModelMapActionSupport {
 		return "edit";
 	}
 	
-	@Action(value="listData", results = {
-		@Result(name="json", type="json", params={"root", "model"})
-	})
+	@Action("listData")
 	public String listData() {
 		Long projectId = getLongParam("projectId");
 		String status = getStringParam("status");

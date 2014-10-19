@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
+import org.apache.struts2.convention.annotation.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ablesky.asdeploy.action.support.HttpMethod;
@@ -17,6 +18,10 @@ import com.ablesky.asdeploy.service.IUserService;
 import com.ablesky.asdeploy.util.AuthUtil;
 
 @ParentPackage("base")
+@Results({
+	@Result(name="json", type="json", params={"root", "model"}),
+	@Result(name="redirect", type="redirect", location="${redirectLocation}")
+})
 @SuppressWarnings("serial")
 public class IndexAction extends ModelMapActionSupport {
 	
@@ -96,8 +101,7 @@ public class IndexAction extends ModelMapActionSupport {
 	}
 	
 	@Action(value="register", results={
-		@Result(name="register", location="register.jsp"),
-		@Result(name="toMain", type="redirect", location=DEFAULT_SUCCESS_URL)
+		@Result(name="register", location="register.jsp")
 	})
 	public String register() {
 		String method = request.getMethod();
@@ -136,12 +140,12 @@ public class IndexAction extends ModelMapActionSupport {
 		}
 		userService.createNewUser(username, password);
 		AuthUtil.login(username, password, true);
-		return "toMain";
+		model.put("redirectLocation", DEFAULT_SUCCESS_URL);
+		return "redirect";
 	}
 	
 	@Action(value="unauthorized", results={
-		@Result(name="unauthorized", location="unauthorized.jsp"),
-		@Result(name="json", type="json", params={"root", "model"})
+		@Result(name="unauthorized", location="unauthorized.jsp")
 	})
 	public String unauthorized() {
 		if(isAjax(request)) {

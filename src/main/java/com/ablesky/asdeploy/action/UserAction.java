@@ -5,6 +5,7 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
+import org.apache.struts2.convention.annotation.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ablesky.asdeploy.action.support.HttpMethod;
@@ -15,6 +16,10 @@ import com.ablesky.asdeploy.util.AuthUtil;
 
 @ParentPackage("base")
 @Namespace("/user")
+@Results({
+	@Result(name="json", type="json", params={"root", "model"}),
+	@Result(name="redirect", type="redirect", location="${redirectLocation}")
+})
 @SuppressWarnings("serial")
 public class UserAction extends ModelMapActionSupport {
 	
@@ -29,8 +34,7 @@ public class UserAction extends ModelMapActionSupport {
 	}
 	
 	@Action(value="changePassword", results = {
-		@Result(name="changePassword", location="changePassword.jsp"),
-		@Result(name="json", type="json", params={"root", "model"})
+		@Result(name="changePassword", location="changePassword.jsp")
 	})
 	public String changePassword() {
 		String method = request.getMethod();
