@@ -1,5 +1,6 @@
 package com.ablesky.asdeploy.action.support;
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -103,6 +104,11 @@ public abstract class ModelMapActionSupport extends ActionSupport
 		return BooleanUtils.toBoolean(getStringParam(key));
 	}
 	
+	protected File getFileParam(String key) {
+		List<File> list = getFileParamList(key);
+		return list.size() > 0? list.get(0): null;
+	}
+	
 	protected List<String> getStringParamList(String key) {
 		Object obj = model.get(key);
 		if(obj == null) {
@@ -174,6 +180,19 @@ public abstract class ModelMapActionSupport extends ActionSupport
 			list.add(BooleanUtils.toBoolean(str));
 		}
 		return list;
+	}
+	
+	protected List<File> getFileParamList(String key) {
+		Object obj = model.get(key);
+		if(obj == null) {
+			return Collections.emptyList();
+		}
+		Class<?> clazz = obj.getClass();
+		if(clazz.isArray()) {
+			return Arrays.<File>asList((File[]) obj);
+		} else {
+			return Arrays.<File>asList(new File[]{(File) obj}); 
+		}
 	}
 	
 	protected void clearModel() {
