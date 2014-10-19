@@ -21,6 +21,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
@@ -107,6 +108,10 @@ public abstract class ModelMapActionSupport extends ActionSupport
 	protected File getFileParam(String key) {
 		List<File> list = getFileParamList(key);
 		return list.size() > 0? list.get(0): null;
+	}
+	
+	protected MultipartFile getMultipartFileParam(String key) {
+		return new ActionSupportMultipartFile(key, this);
 	}
 	
 	protected List<String> getStringParamList(String key) {

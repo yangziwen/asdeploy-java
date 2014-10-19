@@ -19,7 +19,6 @@ import org.apache.struts2.convention.annotation.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ablesky.asdeploy.action.support.ActionSupportMultipartFile;
 import com.ablesky.asdeploy.action.support.ModelMapActionSupport;
 import com.ablesky.asdeploy.dto.ConflictInfoDto;
 import com.ablesky.asdeploy.pojo.DeployItem;
@@ -146,7 +145,7 @@ public class DeployAction extends ModelMapActionSupport {
 	public String uploadStaticTar() throws IllegalStateException, IOException {
 		Long projectId = getLongParam("projectId");
 		String version = getStringParam("version");
-		MultipartFile staticTarFile = new ActionSupportMultipartFile("staticTarFile", this);
+		MultipartFile staticTarFile = getMultipartFileParam("staticTarFile");
 		String filename = staticTarFile.getOriginalFilename();
 		Project project = projectService.getProjectById(projectId);
 		if(project == null) {
@@ -168,7 +167,7 @@ public class DeployAction extends ModelMapActionSupport {
 		Long patchGroupId = getLongParam("patchGroupId");
 		String deployType = getStringParam("deployType");
 		String version = getStringParam("version");
-		MultipartFile deployItemFile = new ActionSupportMultipartFile("deployItemField", this);
+		MultipartFile deployItemFile = getMultipartFileParam("deployItemField");
 		
 		String filename = deployItemFile.getOriginalFilename();
 		Project project = projectService.getProjectById(projectId);

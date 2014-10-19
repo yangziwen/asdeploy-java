@@ -38,7 +38,8 @@ public class ActionSupportMultipartFile implements MultipartFile {
 
 	@Override
 	public boolean isEmpty() {
-		return action.getFileParam(inputName) == null;
+		File file = action.getFileParam(inputName);
+		return file == null || FileUtils.sizeOf(file) == 0;
 	}
 
 	@Override
