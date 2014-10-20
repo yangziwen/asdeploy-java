@@ -54,7 +54,7 @@ public class DeployAction extends ModelMapActionSupport {
 		@Result(name="initOption", location="/WEB-INF/views/deploy/initOption.jsp")
 	})
 	public String initOptionWithErrorMsg() {
-		if("paramsError".equals(getPathVariable(1))){
+		if("paramsError".equals(getStringParam("{1}"))){
 			model.put("errorMessage", "输入参数有误!");
 		}
 		return initOption();

@@ -9,7 +9,6 @@ import java.util.Map;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
@@ -69,7 +68,7 @@ public class DeployRecordAction extends ModelMapActionSupport {
 		@Result(name="detail", location="/WEB-INF/views/deployRecord/detail.jsp")
 	})
 	public String detail() {
-		Long id = NumberUtils.toLong(getPathVariable(1));
+		Long id = getLongParam("{1}");
 		DeployRecord deployRecord = deployService.getDeployRecordById(id);
 		DeployItem deployItem = deployRecord.getDeployItem();
 		List<String> filePathList = Collections.emptyList();

@@ -4,7 +4,6 @@ package com.ablesky.asdeploy.action;
 import java.util.Collections;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
@@ -46,7 +45,7 @@ public class ProjectAdminAction extends ModelMapActionSupport {
 			doEdit();
 			return "json";
 		} else {
-			Long id = NumberUtils.toLong(getPathVariable(1));
+			Long id = getLongParam("{1}");
 			if(id != null && id > 0){
 				// to edit existed project
 				model.put("project", projectService.getProjectById(id));
@@ -94,7 +93,7 @@ public class ProjectAdminAction extends ModelMapActionSupport {
 	
 	@Action("/admin/project/delete/*")
 	public String delete() {
-		Long id = NumberUtils.toLong(getPathVariable(1));
+		Long id = getLongParam("{1}");
 		projectService.deleteProjectById(id);
 		model.put("success", "true");
 		model.put("message", "删除成功!");
@@ -103,7 +102,7 @@ public class ProjectAdminAction extends ModelMapActionSupport {
 	
 	@Action("/admin/project/switch/*")
 	public String switchDeployScriptType() {
-		Long id = NumberUtils.toLong(getPathVariable(1));
+		Long id = getLongParam("{1}");
 		Integer deployScriptType = getIntParam("deployScriptType");
 		Project project = projectService.getProjectById(id);
 		if(!deployScriptType.equals(project.getDeployScriptType())) {

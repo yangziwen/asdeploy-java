@@ -59,7 +59,15 @@ public abstract class ModelMapActionSupport extends ActionSupport
 		return model;
 	}
 	
+	/**
+	 * <p>可用如下的方式获取Action的value中第i个被标记为*的位置的内容</p>
+	 * <p>getStringParam("{" + i + "}");</p>
+	 * <p>i的取值从1开始</p>
+	 */
 	protected String getStringParam(String key) {
+		if(key.startsWith("{") && key.endsWith("}")) {
+			return getPathVariable(NumberUtils.toInt(key.substring(1, key.length() - 1)));
+		}
 		List<String> list = getStringParamList(key);
 		return list.size() > 0? list.get(0): null;
 	}

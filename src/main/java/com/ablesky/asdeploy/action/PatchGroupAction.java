@@ -12,7 +12,6 @@ import java.util.Map;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.Transformer;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
@@ -89,7 +88,7 @@ public class PatchGroupAction extends ModelMapActionSupport {
 		@Result(name="detail", location="/WEB-INF/views/patchGroup/detail.jsp")
 	})
 	public String detail() {
-		Long id = NumberUtils.toLong(getPathVariable(1));
+		Long id = getLongParam("{1}");
 		PatchGroup patchGroup = patchGroupService.getPatchGroupById(id);
 		List<PatchFileRelGroup> relList = patchGroupService.getPatchFileRelGroupListResult(0, 0, new ModelMap()
 			.addAttribute("patchGroupId", id)
@@ -132,7 +131,7 @@ public class PatchGroupAction extends ModelMapActionSupport {
 			doEdit();
 			return "json";
 		} else {
-			toEdit(NumberUtils.toLong(getPathVariable(1)));
+			toEdit(getLongParam("{1}"));
 			return "edit";
 		}
 	}
@@ -146,7 +145,7 @@ public class PatchGroupAction extends ModelMapActionSupport {
 	}
 	
 	private void doEdit() {
-		Long id = NumberUtils.toLong(getPathVariable(1));
+		Long id = getLongParam("{1}");
 		Long projectId = getLongParam("projectId");
 		String name = getStringParam("name");
 		String checkCode = getStringParam("checkCode");
