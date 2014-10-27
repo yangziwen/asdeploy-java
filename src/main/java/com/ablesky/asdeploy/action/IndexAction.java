@@ -55,7 +55,6 @@ public class IndexAction extends ModelMapActionSupport {
 	
 	@Action(value="login", results={
 		@Result(name="login", location="login.jsp"),
-		@Result(name="json", type="json", params={"root", "model"})
 	})
 	public String login() throws Exception {
 		String method = request.getMethod();
