@@ -31,12 +31,13 @@ import com.ablesky.asdeploy.service.IDeployService;
 import com.ablesky.asdeploy.service.IUserService;
 import com.ablesky.asdeploy.util.AuthUtil;
 import com.ablesky.asdeploy.util.ImageUtil;
+import com.ablesky.asdeploy.util.SystemUtil;
 import com.alibaba.fastjson.JSON;
 
 @Controller
 public class IndexController {
 	
-	public static final String DEFAULT_SUCCESS_URL = "/main";
+	public static final String DEFAULT_SUCCESS_PATH = "/main";
 	
 	@Deprecated
 	public static final String REGISTER_VERIFY_CODE = "registerVerifyCode";
@@ -48,7 +49,10 @@ public class IndexController {
 	private IDeployService deployService;
 	
 	@RequestMapping({ "/", "/main"})
-	public String main(Model model) {
+	public String main(Model model, HttpServletRequest request) {
+		if(SystemUtil.HTTPS_SCHEME.equals(request.getScheme())) {
+			return "redirect:" + buildDefaultSuccessUrl(request);
+		}
 		model.addAttribute("deployLock", deployService.checkCurrentLock())
 			.addAttribute("currentUser", AuthUtil.getCurrentUser())
 			.addAttribute("isSuperAdmin", AuthUtil.isSuperAdmin());
@@ -63,10 +67,14 @@ public class IndexController {
 	@RequestMapping(value="/login", method=RequestMethod.GET)
 	public String login(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if(AuthUtil.isAuthenticated()) {
-			org.apache.shiro.web.util.WebUtils.redirectToSavedRequest(request, response, DEFAULT_SUCCESS_URL);
+			org.apache.shiro.web.util.WebUtils.redirectToSavedRequest(request, response, buildDefaultSuccessUrl(request));
 			return null;
 		}
 		return "login";
+	}
+	
+	private String buildDefaultSuccessUrl(HttpServletRequest request) {
+		return "http://" + request.getServerName() + ":" + SystemUtil.HTTP_PORT + DEFAULT_SUCCESS_PATH;
 	}
 	
 	/**
@@ -105,9 +113,8 @@ public class IndexController {
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	public String afterLoginSubmission(String username, String password, Model model, 
 			HttpServletRequest request, HttpServletResponse response) throws IOException {
-		
 		if(AuthUtil.isAuthenticated()) {
-			org.apache.shiro.web.util.WebUtils.redirectToSavedRequest(request, response, DEFAULT_SUCCESS_URL);
+			org.apache.shiro.web.util.WebUtils.redirectToSavedRequest(request, response, DEFAULT_SUCCESS_PATH);
 			return null;
 		} 
 		
@@ -152,7 +159,7 @@ public class IndexController {
 		}
 		userService.createNewUser(username, password);
 		AuthUtil.login(username, password, true);
-		return "redirect:" + DEFAULT_SUCCESS_URL;
+		return "redirect:" + DEFAULT_SUCCESS_PATH;
 	}
 	
 	@RequestMapping("/register/verifyImage")

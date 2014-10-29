@@ -21,8 +21,6 @@ import com.ablesky.asdeploy.service.IUserService;
 
 public class ShiroLdapRealm extends JndiLdapRealm {
 	
-	public static final String LDAP_URL = "asdeploy.ldap.url";	// 目前仅在applicationContext-shiro.xml中用到了
-	
 	@Autowired
 	private IUserService userService;
 	@Autowired

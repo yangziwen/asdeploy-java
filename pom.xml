@@ -444,7 +444,10 @@
 				<version>2.2</version>
 				<configuration>
 					<path>/</path>
-					<port>8099</port>
+					<port>${asdeploy.http.port}</port>
+					<httpsPort>${asdeploy.https.port}</httpsPort>
+					<keystoreFile>${project.basedir}/localhost.keystore</keystoreFile>
+					<keystorePass>123456</keystorePass>
 					<charset>UTF-8</charset>
 					<uriEncoding>UTF-8</uriEncoding>
 					<systemProperties>
@@ -452,6 +455,32 @@
 					</systemProperties>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>8.1.8.v20121106</version>
+				<configuration>
+					<webAppConfig>
+						<contextPath>/</contextPath>
+					</webAppConfig>
+					<connectors>
+						<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+							<port>${asdeploy.http.port}</port>
+						</connector>
+						<connector implementation="org.eclipse.jetty.server.ssl.SslSocketConnector">
+							<port>${asdeploy.https.port}</port>
+							<keystore>${project.basedir}/localhost.keystore</keystore>
+							<keyPassword>123456</keyPassword>
+						</connector>
+					</connectors>
+					<systemProperties>
+						<systemProperty>
+							<name>spring.profiles.active</name>
+							<value>${spring.profiles.active}</value>
+						</systemProperty>
+					</systemProperties>
+				</configuration>
+			</plugin>  
 		</plugins>
 	</build>
 </project>

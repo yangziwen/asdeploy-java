@@ -39,9 +39,15 @@
 
  &ensp;&ensp;**2.初始化数据库**  `mvn compile exec:exec -Pinit-db`
 
- &ensp;&ensp;**3.运行工程**  `mvn tomcat7:run`，如需开启ldap验证，则可在系统变量中设置ldap服务器的url
+ &ensp;&ensp;**3.运行工程**  `mvn jetty:run -Dasdeploy.http.port=8099 -Dasdeploy.https.port=8443`
+ 
+ &ensp;&ensp;&ensp;&ensp;如果不追加端口的系统变量，则默认使用80和443端口。
+ 
+ &ensp;&ensp;&ensp;&ensp;如果是使用maven的tomcat插件或者jetty插件运行工程，则必须设置这两个环境变量。
+ 
+ &ensp;&ensp;&ensp;&ensp;如需开启ldap验证，则可在系统变量中设置ldap服务器的url
 
- &ensp;&ensp;&ensp;&ensp;如`mvn tomcat7:run -Dasdeploy.ldap.url=ldap://localhost:10389`
+ &ensp;&ensp;&ensp;&ensp;如`mvn jetty:run -Dasdeploy.ldap.url=ldap://localhost:10389`
 
  &ensp;&ensp;**4.访问工程** [http://localhost:8099](http://localhost:8099)
 

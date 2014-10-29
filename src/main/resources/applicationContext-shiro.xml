@@ -2,9 +2,11 @@
 <beans xmlns="http://www.springframework.org/schema/beans" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
 	"
 	default-lazy-init="true">
 
@@ -52,24 +54,31 @@
 	</bean>
 
 	<bean id="ldapContextFactory" class="org.apache.shiro.realm.ldap.JndiLdapContextFactory">
-		<property name="url" value="#{systemProperties[T(com.ablesky.asdeploy.security.ShiroLdapRealm).LDAP_URL]}" />
+		<property name="url" value="#{T(com.ablesky.asdeploy.util.SystemUtil).LDAP_URL}" />
 	</bean>
 	
 	<bean id="shiroEhcacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
 		<property name="cacheManagerConfigFile" value="classpath:ehcache-shiro.xml"/>
 	</bean>
-	
+	<bean id="sslFilter" class="org.apache.shiro.web.filter.authz.SslFilter">  
+		<property name="port" value="#{T(com.ablesky.asdeploy.util.SystemUtil).HTTPS_PORT}"/>
+	</bean> 
 	<!-- Shiro Filter -->
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
 		<property name="loginUrl" value="/login" />
-		<property name="successUrl" value="#{T(com.ablesky.asdeploy.controller.IndexController).DEFAULT_SUCCESS_URL}" />
+		<property name="successUrl" value="#{T(com.ablesky.asdeploy.controller.IndexController).DEFAULT_SUCCESS_PATH}" />
 		<property name="unauthorizedUrl" value="/unauthorized"/>
+		<property name="filters">
+			<util:map>
+				<entry key="ssl" value-ref="sslFilter" />
+			</util:map>  
+    	</property>
 		<property name="filterChainDefinitions">
 			<value>
-				/register** = anon
-				/register/** = anon
-				/login = authc
+				/register** = ssl, anon
+				/register/** = ssl, anon
+				/login = ssl, authc
 				/login/** = anon
 				/logout = logout
 				/static/** = anon
