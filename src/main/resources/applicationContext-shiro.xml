@@ -12,16 +12,13 @@
 
 	<description>Shiro安全配置</description>
 	
-	<!-- shiroDbRealm为项目自定义的realm，通过注解声明 -->
+	<bean id="casSubjectFactory" class="org.apache.shiro.cas.CasSubjectFactory"/>
+	
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-		<property name="realms">
-			<list>
-				<ref bean="shiroLdapRealm"/>
-				<ref bean="shiroDbRealm"/>
-			</list>
-		</property>
+		<property name="realm" ref="shiroCasRealm" />
 		<property name="rememberMeManager" ref="rememberMeManager" />
 		<property name="cacheManager" ref="shiroEhcacheManager" />
+		<property name="subjectFactory" ref="casSubjectFactory"/>
 	</bean>
 	
 	<bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
@@ -48,6 +45,11 @@
 	
 	<bean id="shiroDbRealm" class="com.ablesky.asdeploy.security.ShiroDbRealm" />
 
+	<bean id="shiroCasRealm" class="com.ablesky.asdeploy.security.ShiroCasRealm">
+		<property name="casServerUrlPrefix" value="https://localhost:8443"/>
+		<property name="casService" value="http://asdeploy.yangziwen.net:8099/cas" />
+	</bean>
+
 	<bean id="shiroLdapRealm" class="com.ablesky.asdeploy.security.ShiroLdapRealm">
 		<property name="userDnTemplate" value="uid={0},ou=People,dc=ablesky,dc=com" />
 		<property name="contextFactory" ref="ldapContextFactory" />
@@ -62,24 +64,32 @@
 	</bean>
 	<bean id="sslFilter" class="org.apache.shiro.web.filter.authz.SslFilter">  
 		<property name="port" value="#{T(com.ablesky.asdeploy.util.SystemUtil).HTTPS_PORT}"/>
-	</bean> 
+	</bean>
+	<bean id="casFilter" class="org.apache.shiro.cas.CasFilter">
+		<property name="failureUrl" value="/unauthorized"></property>
+	</bean>
+	<bean id="logoutFilter" class="org.apache.shiro.web.filter.authc.LogoutFilter">
+        <property name="redirectUrl" value="https://localhost:8443/logout?service=http://asdeploy.yangziwen.net:8099"/>
+    </bean>
 	<!-- Shiro Filter -->
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
-		<property name="loginUrl" value="/login" />
+		<property name="loginUrl" value="https://localhost:8443/login?service=http://asdeploy.yangziwen.net:8099/cas" />
 		<property name="successUrl" value="#{T(com.ablesky.asdeploy.controller.IndexController).DEFAULT_SUCCESS_PATH}" />
 		<property name="unauthorizedUrl" value="/unauthorized"/>
 		<property name="filters">
 			<util:map>
 				<entry key="ssl" value-ref="sslFilter" />
-			</util:map>  
+				<entry key="cas" value-ref="casFilter" />
+				<entry key="logout" value-ref="logoutFilter" />
+			</util:map>
     	</property>
 		<property name="filterChainDefinitions">
 			<value>
-				/register** = ssl, anon
-				/register/** = ssl, anon
-				/login = ssl, authc
-				/login/** = anon
+				/unauthorized** = anon
+				/register** = anon
+				/register/** = anon
+				/cas = cas
 				/logout = logout
 				/static/** = anon
 				/admin/** = authc, roles[super_admin]

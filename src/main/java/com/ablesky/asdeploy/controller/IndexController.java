@@ -21,17 +21,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ablesky.asdeploy.security.jcaptcha.JCaptcha;
 import com.ablesky.asdeploy.service.IDeployService;
 import com.ablesky.asdeploy.service.IUserService;
 import com.ablesky.asdeploy.util.AuthUtil;
 import com.ablesky.asdeploy.util.ImageUtil;
-import com.ablesky.asdeploy.util.SystemUtil;
 import com.alibaba.fastjson.JSON;
 
 @Controller
@@ -50,80 +47,10 @@ public class IndexController {
 	
 	@RequestMapping({ "/", "/main"})
 	public String main(Model model, HttpServletRequest request) {
-		if(SystemUtil.HTTPS_SCHEME.equals(request.getScheme())) {
-			return "redirect:" + buildDefaultSuccessUrl(request);
-		}
 		model.addAttribute("deployLock", deployService.checkCurrentLock())
 			.addAttribute("currentUser", AuthUtil.getCurrentUser())
 			.addAttribute("isSuperAdmin", AuthUtil.isSuperAdmin());
 		return "main";
-	}
-	
-	/**
-	 * 登录页面
-	 * 需要重新确认身份时，也会跳转此接口
-	 * @throws IOException 
-	 */
-	@RequestMapping(value="/login", method=RequestMethod.GET)
-	public String login(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		if(AuthUtil.isAuthenticated()) {
-			org.apache.shiro.web.util.WebUtils.redirectToSavedRequest(request, response, buildDefaultSuccessUrl(request));
-			return null;
-		}
-		return "login";
-	}
-	
-	private String buildDefaultSuccessUrl(HttpServletRequest request) {
-		return "http://" + request.getServerName() + ":" + SystemUtil.HTTP_PORT + DEFAULT_SUCCESS_PATH;
-	}
-	
-	/**
-	 * admin操作在发送ajax请求时，需要重新确认身份的情形。
-	 * 比如停留在admin的某个页面时，工程重启了，
-	 * 此后再进行发ajax请求的操作时，就需要重新验证一次身份
-	 */
-	@ResponseBody
-	@RequestMapping(value="/login", method=RequestMethod.GET, headers="isAjax=true")
-	public Map<String, Object> login() {
-		return new ModelMap("success", false)
-			.addAttribute("needLogin", true)
-			.addAttribute("message", "需要登录或重新确认身份!");
-	}
- 	
-	/**
-	 * 注册成功后，重定向到登录页面
-	 * @deprecated
-	 */
-	@Deprecated
-	@RequestMapping(value="/login/{msg}", method=RequestMethod.GET)
-	public String login(@PathVariable("msg") String msg, Model model) {
-		if("registerSuccess".equals(msg)) {
-			model.addAttribute("successMessage", "注册成功, 请登录!");
-		}
-		return "login";
-	}
-	
-	/**
-	 * <p>登录操作(实际的登录操作在FormAuthenticationFilter中进行)</p>
-	 * <p>登录失败后，会进入到此方法中</p>
-	 * <p>如果已经是isAuthenticated的状态，也会进入此方法</p>
-	 * <p>见{@link org.apache.shiro.web.filter.AccessControlFilter}的onPreHandle方法</p>
-	 * @throws IOException 
-	 */
-	@RequestMapping(value="/login", method=RequestMethod.POST)
-	public String afterLoginSubmission(String username, String password, Model model, 
-			HttpServletRequest request, HttpServletResponse response) throws IOException {
-		if(AuthUtil.isAuthenticated()) {
-			org.apache.shiro.web.util.WebUtils.redirectToSavedRequest(request, response, DEFAULT_SUCCESS_PATH);
-			return null;
-		} 
-		
-		if(AuthUtil.isRemembered()) {
-			model.addAttribute("errorMessage", "密码错误，请重试!");
-		} else {
-			model.addAttribute("errorMessage", "用户名或密码错误，请重试!");
-		}
-		return "login";
 	}
 	
 	@RequestMapping(value="/register", method=RequestMethod.GET)
