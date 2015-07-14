@@ -16,9 +16,11 @@ public class UserRelRole extends AbstractModel {
 	@GeneratedValue
 	@Column
 	private Long id;
+	
 	@ManyToOne
 	@JoinColumn(name="user_id")
 	private User user;
+	
 	@ManyToOne
 	@JoinColumn(name="role_id")
 	private Role role;

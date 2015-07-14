@@ -19,8 +19,10 @@ public class ConflictDetail extends AbstractModel {
 	@GeneratedValue
 	@Column
 	private Long id;
+	
 	@Column(name="deploy_record_id")
 	private Long deployRecordId;
+	
 	@Column(name="conflict_info_id")
 	private Long conflictInfoId;
 	

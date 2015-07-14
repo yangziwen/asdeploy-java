@@ -22,12 +22,16 @@ public class User extends AbstractFastjsonSerializableModel<User> implements Ser
 	@GeneratedValue
 	@Column
 	private Long id;
+	
 	@Column
 	private String username;
+	
 	@Column
 	private String password;
+	
 	@Column(name="create_time")
 	private Timestamp createTime;
+	
 	@Column(name="update_time")
 	private Timestamp updateTime;
 	

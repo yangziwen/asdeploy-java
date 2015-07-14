@@ -28,19 +28,25 @@ public class DeployRecord extends AbstractModel {
 	@GeneratedValue
 	@Column
 	private Long id;
+	
 	@ManyToOne
 	@JoinColumn(name="user_id")
 	private User user;
+	
 	@ManyToOne
 	@JoinColumn(name="project_id")
 	private Project project;
+	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="deploy_item_id")
 	private DeployItem deployItem;
+	
 	@Column
 	private String status;
+	
 	@Column(name="create_time")
 	private Timestamp createTime;
+	
 	@Column(name="is_conflict_with_others")
 	private Boolean isConflictWithOthers;
 	

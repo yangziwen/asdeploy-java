@@ -21,14 +21,18 @@ public class DeployLock extends AbstractModel {
 	@GeneratedValue
 	@Column
 	private Long id;
+	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="user_id")
 	private User user;
+	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="deploy_record_id")
 	private DeployRecord deployRecord;
+	
 	@Column(name="is_locked")
 	private Boolean isLocked;
+	
 	@Column(name="locked_time")
 	private Timestamp lockedTime;
 	

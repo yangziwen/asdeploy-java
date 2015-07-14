@@ -21,25 +21,34 @@ public class DeployItem extends AbstractModel {
 	@GeneratedValue
 	@Column
 	private Long id;
+	
 	@ManyToOne
 	@JoinColumn(name="user_id")
 	private User user;
+	
 	@ManyToOne
 	@JoinColumn(name="project_id")
 	private Project project;
+	
 	@ManyToOne
 	@JoinColumn(name="patch_group_id")
 	private PatchGroup patchGroup;
+	
 	@Column
 	private String version;
+	
 	@Column(name="deploy_type")
 	private String deployType;
+	
 	@Column(name="file_name")
 	private String fileName;
+	
 	@Column(name="folder_path")
 	private String folderPath;
+	
 	@Column(name="create_time")
 	private Timestamp createTime;
+	
 	@Column(name="update_time")
 	private Timestamp updateTime;
 	

@@ -16,8 +16,10 @@ public class Role extends AbstractModel {
 	@GeneratedValue
 	@Column
 	private Long id;
+	
 	@Column
 	private String name;
+	
 	@Column
 	private String comment;
 	

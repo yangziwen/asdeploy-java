@@ -19,13 +19,17 @@ public class PatchFileRelGroup extends AbstractModel {
 	@GeneratedValue
 	@Column
 	private Long id;
+	
 	@ManyToOne
 	@JoinColumn(name="patch_file_id")
 	private PatchFile patchFile;
+	
 	@Column(name="patch_group_id")
 	private Long patchGroupId;
+	
 	@Column(name="create_time")
 	private Timestamp createTime;
+	
 	@Transient
 	private PatchGroup patchGroup;
 	

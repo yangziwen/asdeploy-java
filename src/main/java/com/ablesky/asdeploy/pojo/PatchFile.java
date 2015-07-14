@@ -15,8 +15,10 @@ public class PatchFile extends AbstractModel implements Comparable<PatchFile> {
 	@GeneratedValue
 	@Column
 	private Long id;
+	
 	@Column(name="file_path")
 	private String filePath;
+	
 	@Column(name="project_id")
 	private Long projectId;
 	

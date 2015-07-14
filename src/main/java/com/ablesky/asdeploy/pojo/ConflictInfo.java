@@ -21,18 +21,23 @@ public class ConflictInfo extends AbstractModel {
 	@GeneratedValue
 	@Column
 	private Long id;
+	
 	// 当前补丁组
 	@Column(name="conflict_patch_group_id")
 	private Long patchGroupId;
+	
 	@Transient
 	private PatchGroup patchGroup;
+	
 	// 冲突文件信息
 	@ManyToOne
 	@JoinColumn(name="conflict_patch_file_id")
 	private PatchFile patchFile;
+	
 	// 与其他的哪些补丁组冲突
 	@Column(name="related_patch_group_id")
 	private Long relatedPatchGroupId;
+	
 	@Transient
 	private PatchGroup relatedPatchGroup;
 	

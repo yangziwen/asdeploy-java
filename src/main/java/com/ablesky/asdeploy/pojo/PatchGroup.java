@@ -21,20 +21,27 @@ public class PatchGroup extends AbstractModel {
 	@GeneratedValue
 	@Column
 	private Long id;
+	
 	@ManyToOne
 	@JoinColumn(name="creator_id")
 	private User creator;
+	
 	@ManyToOne
 	@JoinColumn(name="project_id")
 	private Project project;
+	
 	@Column
 	private String name;
+	
 	@Column(name="check_code")
 	private String checkCode;
+	
 	@Column
 	private String status;
+	
 	@Column(name="create_time")
 	private Timestamp createTime;
+	
 	@Column(name="finish_time")
 	private Timestamp finishTime;
 	
